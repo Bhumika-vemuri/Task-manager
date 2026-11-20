@@ -5,9 +5,11 @@
 [![SQLite](https://img.shields.io/badge/Database-SQLite-C96B45.svg)](https://www.sqlite.org/)
 [![Tests](https://img.shields.io/badge/pytest-23%20passed-25845A.svg)](https://docs.pytest.org/)
 [![Live Demo](https://img.shields.io/badge/Render-Live%20Demo-46E3B7?style=flat&logo=render)](https://task-manager-web-app-2qu6.onrender.com)
+[![Demo Video](https://img.shields.io/badge/Demo%20Video-docs%2Fdemo--video.mp4-E04E39?style=flat&logo=quicktime)](docs/demo-video.mp4)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 > 🚀 **Live Production Deployment**: [https://task-manager-web-app-2qu6.onrender.com](https://task-manager-web-app-2qu6.onrender.com)  
+> 🎬 **Demo Video Walkthrough**: [`docs/demo-video.mp4`](docs/demo-video.mp4) *(Full end-to-end feature demo)*  
 > 👤 **Pre-Seeded Demo Login**: Email: `demo1@example.com` | Password: `password123`
 
 ---
@@ -276,6 +278,16 @@ All endpoints adhere to a standardized RESTful JSON envelope:
 
 The frontend provides a polished, responsive user experience built around a warm off-white and deep forest-green aesthetic (`#173F35`).
 
+### 🎬 Demo Video Walkthrough
+An end-to-end video walkthrough demonstrating authentication, project & story hierarchy, sprint status updates, subtask checklists, and Kanban operations is available in the repository:
+- **Video File**: [`docs/demo-video.mp4`](docs/demo-video.mp4)
+- **Live Demo URL**: [https://task-manager-web-app-2qu6.onrender.com](https://task-manager-web-app-2qu6.onrender.com)
+- **Pre-Seeded Login**: `demo1@example.com` / `password123`
+
+<video src="docs/demo-video.mp4" controls="controls" width="100%">
+  Your browser does not support the video tag. You can view or download the walkthrough video directly at <a href="docs/demo-video.mp4">docs/demo-video.mp4</a>.
+</video>
+
 ### 1. Public Landing & Overview
 *Value proposition, agile methodology introduction, and quick demo credentials.*
 ![Landing Page](docs/screenshots/landing_page.png)
@@ -371,8 +383,10 @@ http://127.0.0.1:5000
 
 ### Production Deployment (Render)
 
-This application is live on Render at:
-🔗 **[https://task-manager-web-app-2qu6.onrender.com](https://task-manager-web-app-2qu6.onrender.com)**
+This application is deployed and live on Render:
+- 🌐 **Live Demo URL**: [https://task-manager-web-app-2qu6.onrender.com](https://task-manager-web-app-2qu6.onrender.com)
+- 🎬 **Walkthrough Video**: [`docs/demo-video.mp4`](docs/demo-video.mp4)
+- 👤 **Demo Credentials**: Email `demo1@example.com` | Password `password123`
 
 #### Render Configuration Settings:
 - **Runtime**: `Python 3`
