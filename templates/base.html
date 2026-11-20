@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+  <meta name="description" content="TaskNest - A calm, focused, and intuitive task management application. Organize today, build a better tomorrow.">
+  <title>{% block title %}TaskNest — Organize Today. Build a Better Tomorrow.{% endblock %}</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  {% block extra_head %}{% endblock %}
+</head>
+<body>
+
+  {% block body %}
+  {% endblock %}
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container"></div>
+
+  <!-- Reusable Task Modal (Add / Edit) -->
+  {% if current_user.is_authenticated %}
+  <div class="modal-overlay" id="task-modal" role="dialog" aria-modal="true" aria-labelledby="task-modal-title">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="task-modal-title">Add New Task</h3>
+        <button type="button" class="modal-close-btn modal-close-trigger" aria-label="Close modal">
+          <svg class="icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+      <form id="task-form">
+        <div class="modal-body">
+          <input type="hidden" id="task-id" value="">
+          
+          <div class="form-group">
+            <label class="form-label" for="task-title-input">Task Title <span class="required">*</span></label>
+            <input type="text" id="task-title-input" class="form-control" placeholder="e.g., Review project roadmap" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="task-desc-input">Description</label>
+            <textarea id="task-desc-input" class="form-control" placeholder="Add additional details, notes, or subtasks..."></textarea>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="task-priority-select">Priority</label>
+              <select id="task-priority-select" class="form-control">
+                <option value="low">Low Priority</option>
+                <option value="medium" selected>Medium Priority</option>
+                <option value="high">High Priority</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="task-status-select">Status</label>
+              <select id="task-status-select" class="form-control">
+                <option value="pending" selected>Pending / To Do</option>
+                <option value="in_progress">In Progress</option>
+                <option value="blocked">Blocked</option>
+                <option value="in_review">In Review</option>
+                <option value="completed">Completed</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="task-category-select">Category</label>
+              <select id="task-category-select" class="form-control">
+                <option value="">No Category</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="task-due-date-input">Due Date</label>
+              <input type="date" id="task-due-date-input" class="form-control">
+            </div>
+          </div>
+
+          {% if current_user.is_management %}
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="task-assignee-select">Assign to team member <span class="required">*</span></label>
+              <select id="task-assignee-select" class="form-control">
+                <option value="">Select team member</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="task-recurrence-select">Recurrence</label>
+              <select id="task-recurrence-select" class="form-control">
+                <option value="none" selected>None (One-time)</option>
+                <option value="daily">Daily</option>
+                <option value="weekly">Weekly</option>
+                <option value="monthly">Monthly</option>
+              </select>
+            </div>
+          </div>
+          {% endif %}
+
+          {% if current_user.has_role('super_admin', 'admin') %}
+          <section class="task-budget-fields" aria-labelledby="task-budget-heading">
+            <div class="form-section-heading">
+              <h4 id="task-budget-heading">Budget Tracking</h4>
+              <p class="text-muted">Set the approved task budget and record the amount spent.</p>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="task-actual-budget-input">Actual Budget (₹)</label>
+                <input type="number" id="task-actual-budget-input" class="form-control" min="0" max="999999999999.99" step="0.01" value="0.00" inputmode="decimal" placeholder="0.00">
+                <small class="text-muted">Approved or allocated budget for this task.</small>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="task-spent-budget-input">Spent Budget (₹)</label>
+                <input type="number" id="task-spent-budget-input" class="form-control" min="0" max="999999999999.99" step="0.01" value="0.00" inputmode="decimal" placeholder="0.00">
+                <small class="text-muted">Amount already spent against this task.</small>
+              </div>
+            </div>
+            <p id="task-budget-preview" class="text-muted" aria-live="polite">Remaining budget: ₹0.00</p>
+          </section>
+          {% endif %}
+
+          <div class="form-group">
+            <label class="form-label" for="task-acceptance-input">Acceptance Criteria</label>
+            <textarea id="task-acceptance-input" class="form-control" rows="2" placeholder="Conditions required for this task to be considered complete..."></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary modal-close-trigger">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Task</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- Core Scripts -->
+  <script src="{{ url_for('static', filename='js/api.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/auth.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/tasks.js') }}"></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>
